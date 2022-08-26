@@ -1,0 +1,35 @@
+html,body{
+    overflow-x: hidden;
+}
+
+body {
+    background-color: rgb(15, 15, 60);
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#heading {
+    display: flex;
+    justify-content: center;
+}
+
+.playerSelections {
+    display: flex;
+    justify-content: center; 
+    gap: 100px;
+}
+
+.running-score {
+    padding-top: 20px;
+    font-size: 25px;
+}
+
+.player-won {
+    color: rgb(7, 199, 7);
+}
+
+.computer-won {
+    color: rgb(226, 0, 0);
+}
