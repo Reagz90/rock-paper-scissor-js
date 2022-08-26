@@ -2,10 +2,13 @@
    Rock paper scissor JS game.
    Play against the computer.
    May the best player win!
+   Sounds from Zapsplat.com
 *****************************/
 
 let playerScore = 0;
 let computerScore = 0; 
+const winnerAudio = new Audio('sounds/crowdCheering.mp3');
+const loserAudio = new Audio('sounds/youLose.mp3');
 const resultsDiv = document.querySelector('.results'); 
 const playerScoreSpan = document.querySelector('.player-score');
 const computerScoreSpan = document.querySelector('.computer-score'); 
@@ -50,11 +53,19 @@ function checkForWinner(playerScore, computerScore) {
     h2.classList.add('player-won');
     h2.innerText = `You won ${playerScore} to ${computerScore}. You beat the machine!`
     resultsDiv.appendChild(h2); 
+    const winnerGif = document.createElement("img"); 
+    winnerGif.src = "images/winnerGif.gif";
+    resultsDiv.appendChild(winnerGif);
+    winnerAudio.play();
   } else if (computerScore === 5) { 
     const h2 = document.createElement('h2');
     h2.classList.add('computer-won');
     h2.innerText = `You lost ${playerScore} to ${computerScore}. The machine beat you!`
     resultsDiv.appendChild(h2); 
+    const loserGif = document.createElement("img"); 
+    loserGif.src = "images/loserGif.gif"; 
+    resultsDiv.appendChild(loserGif);
+    loserAudio.play(); 
   }
 }
 
