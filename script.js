@@ -2,84 +2,101 @@
    Rock paper scissor JS game.
    Play against the computer.
    May the best player win!
+   Sounds from Zapsplat.com
 *****************************/
 
-game();
-
-//best of 5 rounds
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
-  let draws = 0;
-
-  for (i = 1; i <= 5; i++) {
-    const playerSelection = prompt("Pick your play: Rock, Paper or Scissors?");
-    const computerSelection = computerPlay();
-
-    console.log(`*****ROUND ${i}*****`);
-    console.log(`Player selection = ${playerSelection}`);
-    console.log(`Computer selection = ${computerSelection}`);
-
-    let roundResult = playRound(playerSelection, computerSelection);
-    console.log(roundResult);
-
-    if (roundResult.includes("You Win!")) {
-      playerScore++;
-    } else if (roundResult.includes("You Lose!")) {
-      computerScore++;
-    } else {
-      draws++;
-    }
-    console.log(`Player Score = ${playerScore}`);
-    console.log(`Computer Score = ${computerScore}`);
-    console.log(`Draws = ${draws}`);
-  }
-
-  if (playerScore > computerScore) {
-    console.log(`You win best of 5 rounds!\
-    You won ${playerScore} rounds!`);
-  } else if (computerScore > playerScore) {
-    console.log(`You lost best of 5 rounds!\
-    Computer won ${computerScore} rounds!`);
-  } else {
-    console.log("Best of 5 was a draw!");
-  }
-}
+let playerScore = 0;
+let computerScore = 0; 
+const winnerAudio = new Audio('sounds/crowdCheering.mp3');
+const loserAudio = new Audio('sounds/youLose.mp3');
+const resultsDiv = document.querySelector('.results'); 
+const playerScoreSpan = document.querySelector('.player-score');
+const computerScoreSpan = document.querySelector('.computer-score'); 
 
 //rock paper scissors core game function
 function playRound(playerSelection, computerSelection) {
-  playerSelection =
-    playerSelection.charAt(0).toUpperCase() +
-    playerSelection.slice(1).toLowerCase().trim();
   let playerLoses = `You Lose! ${computerSelection} beats ${playerSelection}!`;
   let draw = "Draw, play again!";
   let playerWins = `You Win! ${playerSelection} beats ${computerSelection}`;
-  let invalidInput = "Please enter Rock, Paper or Scissors!";
 
   if (
     (playerSelection == "Rock" && computerSelection == "Paper") ||
     (playerSelection == "Paper" && computerSelection == "Scissors") ||
     (playerSelection == "Scissors" && computerSelection == "Rock")
   ) {
-    return playerLoses;
+    computerScore++;
+    const p = document.createElement('p');
+    p.innerText = playerLoses;
+    resultsDiv.appendChild(p); 
   } else if (playerSelection == computerSelection) {
-    return draw;
-  } else if (
-    playerSelection != "Rock" &&
-    playerSelection != "Paper" &&
-    playerSelection != "Scissors"
-  ) {
-    return invalidInput;
+    const p = document.createElement('p');
+    p.innerText = draw;
+    resultsDiv.appendChild(p); 
   } else {
-    return playerWins;
+    playerScore++; 
+    const p = document.createElement('p');
+    p.innerText = playerWins;
+    resultsDiv.appendChild(p); 
   }
 }
 
 //computer play function
 function computerPlay() {
   var myArray = ["Rock", "Paper", "Scissors"];
-
   var randomItem = myArray[Math.floor(Math.random() * myArray.length)];
-
   return randomItem;
 }
+
+function checkForWinner(playerScore, computerScore) {
+  if (playerScore === 5) { 
+    const h2 = document.createElement('h2');
+    h2.classList.add('player-won');
+    h2.innerText = `You won ${playerScore} to ${computerScore}. You beat the machine!`
+    resultsDiv.appendChild(h2); 
+    const winnerGif = document.createElement("img"); 
+    winnerGif.src = "images/winnerGif.gif";
+    resultsDiv.appendChild(winnerGif);
+    winnerAudio.play();
+  } else if (computerScore === 5) { 
+    const h2 = document.createElement('h2');
+    h2.classList.add('computer-won');
+    h2.innerText = `You lost ${playerScore} to ${computerScore}. The machine beat you!`
+    resultsDiv.appendChild(h2); 
+    const loserGif = document.createElement("img"); 
+    loserGif.src = "images/loserGif.gif"; 
+    resultsDiv.appendChild(loserGif);
+    loserAudio.play(); 
+  }
+}
+
+function updateScores(playerScore, computerScore) {
+  playerScoreSpan.innerText = `Player Score: ${playerScore}`;
+  computerScoreSpan.innerText = ` Computer Score: ${computerScore}`;
+}
+
+const paperButton = document.querySelector('#paper');
+paper.addEventListener('click', () => {
+  const playerSelection = 'Paper'; 
+  const computerSelection = computerPlay(); 
+  playRound(playerSelection, computerSelection); 
+  updateScores(playerScore, computerScore);
+  checkForWinner(playerScore,computerScore); 
+}); 
+
+const scissorsButton = document.querySelector('#scissors');
+scissors.addEventListener('click', () => {
+  const playerSelection = 'Scissors'; 
+  const computerSelection = computerPlay(); 
+  playRound(playerSelection, computerSelection); 
+  updateScores(playerScore, computerScore);
+  checkForWinner(playerScore,computerScore);
+}); 
+
+const rockButton = document.querySelector('#rock');
+rock.addEventListener('click', () => {
+  const playerSelection = 'Rock'; 
+  const computerSelection = computerPlay(); 
+  playRound(playerSelection, computerSelection);
+  updateScores(playerScore, computerScore);
+  checkForWinner(playerScore,computerScore);
+}); 
